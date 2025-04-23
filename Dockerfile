@@ -7,7 +7,19 @@ COPY birdnames.db .
 COPY speciesid.py .
 COPY webui.py .
 COPY queries.py .
+COPY api.py .
+COPY file_watcher.py .
 COPY templates/ ./templates/
 COPY static/ ./static/
+COPY ./config/ ./config/
 
-CMD python ./speciesid.py
+EXPOSE 8000
+# Use environment variable to determine which app to run
+ENV APP_TYPE="api"
+CMD if [ "$APP_TYPE" = "api" ]; then \
+    python ./api.py; \
+    elif [ "$APP_TYPE" = "file_watcher" ]; then \
+    python ./file_watcher.py; \
+    else \
+    python ./speciesid.py; \
+    fi

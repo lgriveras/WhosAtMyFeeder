@@ -3,7 +3,7 @@ services:
   whosatmyfeeder:
     container_name: whosatmyfeeder
     restart: unless-stopped
-    image: mmcc73/whosatmyfeeder:latest
+    image: feeder-identifier:latest
     volumes:
       - ./config:/config
       - ./data:/data
@@ -11,3 +11,31 @@ services:
       - 7766:7766 #port used by the webserver in the container is defined in config.
     environment:
       - TZ=America/New_York
+      - APP_TYPE=speciesid # Use 'speciesid' for full app with Frigate integration or 'api' for API server only
+
+  # API-only service - Uncomment to run just the API server alongside or instead of the full app
+  bird-api:
+    container_name: bird-api
+    restart: unless-stopped
+    image: feeder-identifier:latest
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    ports:
+      - 8000:8000 #port used by the API server is defined in config.
+    environment:
+      - TZ=America/New_York
+      - APP_TYPE=api # This runs only the API server
+      
+  # File watcher service - For monitoring directories and identifying birds in images
+  bird-watcher:
+    container_name: bird-watcher
+    restart: unless-stopped
+    image: feeder-identifier:latest
+    volumes:
+      - ./config:/config
+      - ./data:/data
+      - ./watch:/watch # Mount the watch directory
+    environment:
+      - TZ=America/New_York
+      - APP_TYPE=file_watcher # This runs the file watcher

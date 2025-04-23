@@ -1,0 +1,4 @@
+watchdog==3.0.0
+Pillow==10.1.0
+PyYAML==6.0.1
+requests==2.31.0

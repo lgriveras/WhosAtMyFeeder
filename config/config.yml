@@ -14,3 +14,12 @@ classification:
 webui:
   port: 7766
   host: 0.0.0.0
+api:
+  port: 8000
+  host: 0.0.0.0
+  debug: false
+file_watcher:
+  watch_directory: ./watch
+  threshold: 0.7
+  use_common_names: true
+  rename_files: true
